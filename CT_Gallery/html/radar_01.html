@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>雷达图</title>
+		<script type="text/javascript" src="../js/echarts.js"></script>
+	</head>
+	<body>
+		<div id="container" style="height: 560px;width: 80%;top:15px"></div>
+		<script>
+			var dom = document.getElementById("container");
+			var mychart = echarts.init(dom);
+			var data = [[5.5,5.0,3.5,5.0,4.0],
+						[3.5,5.0,5.5,4.5,6.5],
+						[1.5,2.5,4.0,2.0,5.0],
+						[2.0,2.5,5.5,3.0,6.0],
+						[4.0,6.5,1.5,6.0,2.0],
+						[3.5,4.5,1.5,4.5,1.0],
+						[1.5,1.0,3.5,2.0,4.0],
+						[5.5,6.0,3.0,3.0,3.0]
+						];
+			var legendData = ['D0', 'D1', 'D2','D3','D4','D5','D6','D7'];
+			const test = [
+								{
+									name: 'weight',
+									type: 'radar',
+									// 悬停放大
+									itemStyle: {
+										emphasis: {
+											lineStyle: {
+												width: 3
+											}
+										}
+									},
+									data : [
+										{
+											value : data[0],
+											name : 'D0',
+											areaStyle: {
+												opacity: 0.2
+											}
+											
+										},
+										 {
+											value : data[1],
+											name : 'D1',
+											areaStyle: {
+												opacity: 0.2
+											}
+										},
+									   {
+											value : data[2],
+											name : 'D2',
+											areaStyle: {
+												opacity: 0.2
+											}
+										},
+									  {
+											value : data[3],
+											name : 'D3',
+											areaStyle: {
+												opacity: 0.2
+											}
+										},
+									  {
+											value : data[4],
+											name : 'D4',
+											areaStyle: {
+												opacity: 0.2
+											}
+										},
+									  {
+											value : data[5],
+											name : 'D5',
+											areaStyle: {
+												opacity: 0.2
+											}
+										},
+									  {
+											value : data[6],
+											name : 'D6',
+											areaStyle: {
+												opacity: 0.2
+											}
+										},
+									  {
+											value : data[7],
+											name :'D7',
+											areaStyle: {
+												opacity: 0.2
+											}
+										}
+									]
+								}
+							]
+			
+
+			const get_data = function(data,legendData){
+				return test;
+			}
+			const source = {
+				// 雷达图的指示器，指定雷达图的变量
+				indicator : [
+				    { text: 'C1', max:7, color:"#334B5C"},
+				    { text: 'C2', max:7, color:"#334B5C"},
+				    { text: 'C3', max: 7, color:"#334B5C"},
+				    { text: 'C4', max: 7, color:"#334B5C"},
+				    { text: 'C5', max: 7, color:"#334B5C"}
+								         
+				 ]
+			}			
+			var option = {
+				    title : {
+				        text: '雷达图（radar）',
+				        subtext: '子标题',
+						left:"45%"
+				    },
+					// 定制指示框
+					tooltip:{
+						show: true,
+						trigger:'item',
+						// formatter:function(params){
+						// 	console.log("参数：",params);
+						// 	return params.data
+						// }
+						textStyle:{
+							fontSize:10,
+							color:'#fff'
+						},
+						backgroundColor:'rgba(51,97,97,0.5)'
+					},
+				    legend: {
+				        orient : 'vertical',
+				        x : 'right',
+				        y : 'bottom',
+				        data: legendData
+				    },
+					// 雷达图
+				    radar : [
+				       {
+						   // 雷达图的指示器，指定雷达图的变量
+				           indicator : source.indicator,
+							splitNumber:7,
+							shape:'circle',
+							splitArea:{
+								areaStyle:{
+									color:"#fff"
+								}
+							},
+							center:['50%','60%'],
+				        }
+				    ],
+				    series :get_data(data,legendData)
+			
+			}
+			mychart.setOption(option);
+		</script>
+	</body>
+</html>

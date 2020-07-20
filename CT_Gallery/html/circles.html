@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>圆圈和光晕</title>
+		<script type="text/javascript" src="../js/echarts.js"></script>
+	</head>
+	<body>
+		<div id="main" style="height: 560px;width: 80%;top:15px"></div>
+		<script type="text/javascript">
+			var mychart = echarts.init(document.getElementById("main"));
+			var symbolSizeArr = [300,150];
+			var dataList = [[3,5],[7,4]];
+			var colorList = ["#ee2277","#ff6782"];
+			var option = {
+				title:{
+					text: "Worm-Related Diseases",
+					subtext: "Infections per 100,000 people",
+					textStyle:{
+						color:"#ff6782",
+						fontSize: 25
+					},
+					subtextStyle:{
+						color:"#f25240",
+						fontSize:15
+					},
+					left:'45%'
+				},
+				// grid:控制这个坐标系的位置
+				grid:{
+					left:'45%',
+					show:true,
+					backgroundColor:"#703A9F"
+				},
+				xAxis:{
+					show:false,
+					min:0,
+					max:10,
+				},
+				yAxis:{
+					show:false,
+					min:0,
+					max:10
+				},
+				series: [{
+					type:'scatter',
+					name:"1990",
+					value:23200,
+					label:{
+						show:true,
+						formatter: "{a}",
+						textStyle:{
+							color:"#fff",
+							fontSize:25
+						}
+					},
+					symbolSize:function(value,params){
+						// 有两个参数
+						return symbolSizeArr[0];
+					},
+					itemStyle: {
+						color:function(para){
+							// 只有一个参数,使用的时候需要打印出来看看再决定使用哪个参数
+							// return colorList[para.dataIndex];
+							return colorList[0];
+						}
+					},
+					data:[dataList[0]]
+				},
+				{
+					type:'scatter',
+					name:"2020",
+					value:8500,
+					label:{
+						show:true,
+						formatter: "{a}",
+						textStyle:{
+							color:"#fff",
+							fontSize:15
+						}
+					},
+					symbolSize:function(value,params){
+						// 有两个参数
+						return symbolSizeArr[1];
+					},
+					itemStyle: {
+						color:function(para){
+							// 只有一个参数,使用的时候需要打印出来看看再决定使用哪个参数
+							return colorList[1];
+						},
+						shadowBlur: 80,
+						shadowColor: 'rgba(215, 225, 105, 0.8)'
+					},
+					data:[dataList[1]]
+				}
+				]
+			}
+			mychart.setOption(option);
+		</script>
+	</body>
+</html>
