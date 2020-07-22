@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>散点和圆环的组合</title> 
+		<script type="text/javascript" src="../js/echarts.js"></script>
+	</head>
+	<body>
+		<div id="main" style="width: 600px;height: 600px;margin: auto;"></div>
+		<script>
+			// scatter data
+			var dataset = [{
+					name: '一线',
+					value: '154'
+					}, {
+					name: '二线',
+					value: '115'
+					}, {
+					name: '三线',
+					value: '113'
+					}, {
+					name: '四线',
+					value: '95'
+					}, {
+					name: '六线',
+					value: '92'
+					}, {
+					name: '五线',
+					value: '87'
+					}, {
+					name: '七线',
+					value: '87'
+					}, {
+					name: '八线',
+					value: '60'
+				}];
+			var colorList = ['#9981DE','#3DA3EF'];	
+			var dataList = add_pro(dataset);	
+			function add_pro(dataset){
+				dataset.forEach((e,i)=>{
+					// 生成min-max之间的整数
+					// Math.floor(Math.random() * (max - min)) + min;
+					x = Math.floor(Math.random() * (70 - 30)) + 30;
+					y = Math.floor(Math.random() * (75 - 35)) + 35;
+					e.name = e.name +'\n'+e.value;
+					e.value =[x,y];
+					e.itemStyle = {
+						color: colorList[i%2]
+					};
+					e.label = {
+						show:true,
+						formatter: "{b}",
+						textStyle:{
+							color:"#fff",
+							fontSize:7
+						}
+					}
+				})
+				return dataset;
+			};
+			// console.log(dataList);
+			// pie data
+			var pieset = [{
+					name: 'circle_01',
+					value: 10
+				}, {
+					name: 'circle_02',
+					value: 10
+				}];
+			function add_piePro(dataset){
+				dataset.forEach((e,i)=>{
+					e.itemStyle = {
+						normal:{
+							borderWidth:1,
+							shadowBlur:20,
+							borderColor:"#fff",
+							shadowColor:"rgba(153, 129, 222,0.8)",
+						}
+					},
+					e.label = {show:false},
+					e.labelLine = {show:false}
+				})
+				return dataset;
+			}	
+			var pieData = add_piePro(pieset);	
+			console.log(pieData);
+			var mychart = echarts.init(document.getElementById("main"));
+			var option = {
+				title: {
+					text:"FOR FUN",
+					textStyle:{
+						color:"#703A9F",
+						fontSize:20
+					},
+					left:"40%",
+					top:10
+				},
+				grid:{
+					// grid可以隐藏，为了画图参考，这里设置的是可见
+					show:true,
+					left:'10%'
+				},
+				xAxis:{
+					show:false,
+					min:0,
+					max:100
+				},
+				yAxis:{
+					show:false,
+					min:0,
+					max:100
+				},
+				series:[{
+					type:'scatter',
+					name:'scatters',
+					symbolSize:function(value,para){
+						return 40;
+					},
+					data:dataList
+				},{
+					type:'pie',
+					name:'addPie',
+					silent: true,
+					radius: [190, 199],
+					hoverAnimation: false,
+					itemStyle:{
+						color:function(para){
+							console.log(para);
+							return colorList[para.dataIndex % 2];
+						}
+					},
+					data:pieData
+				}]
+				
+			};
+			mychart.setOption(option);
+		</script>
+	</body>
+</html>
