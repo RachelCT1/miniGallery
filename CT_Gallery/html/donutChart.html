@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>是甜甜圈的甜啊</title>
+		<script src="../js/d3.min.js"></script>
+	</head>
+	<body>
+		<div id='viz' style="background-color: '#fff';"></div>
+		<script>
+			var width = 650,
+				height = 700;
+			var arc = function(){
+				const radius = 400/2;
+				a = d3.arc().innerRadius(radius*0.7).outerRadius(radius - 2);
+				return a;
+			}
+			var colorList = ['#F8D521','#FCBD00','#EDA93C','#FF9700','#FF7000','#FF6300','#FF4000','#F8121F'];
+			var color = function(i){
+				console.log(colorList[i]);
+				return colorList[i];
+			}
+			var data = d3.json('../data/donutChartData.json').then((data)=>{
+				console.log(data);
+				const arcs = d3.pie()
+						.padAngle(0.005)
+						.sort(null)
+						.value(d=>d.value)(data);
+				console.log(arcs);
+				
+				var svg = d3.select('#viz')
+					.append('svg')
+					.attr('width', width)
+					.attr('height', height)
+					.attr('viewBox',[-width/2,-height/2,width,height]);;			
+				svg.selectAll('path')
+					.data(arcs)
+					.join('path')
+					.attr('fill',d=>{return color(d.index)})
+					.attr('d',arc());
+				svg.append('g')
+					.attr('font-size',12)
+					.attr('text-anchor','middle')
+					.selectAll('text')
+					.data(arcs)
+					.join('text')
+					.attr('transform',d=>`translate(${arc().centroid(d)})`)
+					.call(text=>text.text(d=>d.data.name))
+									.attr("font-weight", "bold")
+									.attr('stroke','#8865ff')
+									.style('stroke-width',0.3)
+									.attr('fill','#000');
+			
+			})
+			
+		</script>
+					
+	</body>
+</html>
