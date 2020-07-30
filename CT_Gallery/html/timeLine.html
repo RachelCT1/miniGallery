@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Echarts TimeLine</title>
+		<script src="../js/echarts.min.js"></script>
+	</head>
+	<body>
+		<div id="main" style="width: 600px;height: 650px;margin: auto;"></div>
+		<script>
+			var colorList = ['#FE6776','#D7D3B6','#92CABF'];
+			var time_series = ['march20', 'march21', 'march22', 'march23','march24', 'march25'];
+			var pie_category = ['positive', 'neutral', 'negative'];
+			var pie_data = [
+				[306, 926, 57],
+				[275, 696, 48],
+				[302, 718, 48],
+				[289, 748, 34],
+				[250, 652, 46],
+				[229, 641, 42]
+			];
+			
+			var mychart = echarts.init(document.getElementById('main'));
+			var option = {
+				baseOption:{
+					timeline:{
+						axisType:'category',
+						// 时间轴两端的控制按钮不显示
+						controlStyle:{show:false},
+						playInterval:1000,
+						symbolSize:1,
+						autoPlay:true,
+						data:time_series
+					},
+					tooltip:{},
+					legend:{
+						x:'center',
+						top:'10%',
+						data:pie_category
+					},
+					graphic:{
+						type:'image',
+						left:'center',
+						top:'middle',
+						style:{
+							image:'../pics/fun.jpg',
+							width: 150,
+							height: 100
+						}
+					},
+					series:[{
+						name:'tendency',
+						type:'pie',
+						radius:['60%','70%'],
+						emphasis:{
+							itemStyle:{
+								shadowBlur:10,
+								shawdowColor:'rgb(0,0,0,0.5)',
+								opacity:0.6
+							}
+						}
+					}]
+				},
+				options:[]
+			};
+			// 按格式构造数据
+			for(var n=0;n<time_series.length;n++){
+				var data = [];
+				for(var j=0;j<pie_data[n].length;j++){
+					data.push({
+						name:pie_category[j],
+						value:pie_data[n][j]
+					});
+				}
+				option.options.push({
+					series:[{
+						data:data,
+						itemStyle:{
+							color:function(d){
+								return colorList[d.dataIndex];
+							}
+						}
+					}]
+				});
+			}
+			mychart.setOption(option);
+		</script>
+	</body>
+</html>
